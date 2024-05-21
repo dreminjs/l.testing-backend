@@ -1,0 +1,122 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex", "fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id       Int      @id @default(autoincrement())
+  roleName RoleName @unique @map("role_name")
+  users    User[]
+
+  @@map("roles")
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  roleId        Int      @map("role_id")
+  login         String?  @unique @map("login")
+  password      String?  @map("password")
+  resume        String?  @map("resume")
+  lastName      String?  @map("last_name")
+  firstName     String?  @map("first_name")
+  middleName    String?  @map("middle_name")
+  phoneNumber   String?  @map("phone_number")
+  hasChildren   Boolean? @default(false) @map("has_children")
+  maritalStatus String?  @map("marital_status")
+  email         String?  @unique @map("email")
+  isMilitaryId  Boolean? @default(false) @map("is_military_id")
+  tests         Result[]
+  role          Role     @relation(fields: [roleId], references: [id])
+
+  @@index([login])
+  @@index([lastName])
+  @@map("users")
+}
+
+model TestDirection {
+  id            Int    @id @default(autoincrement())
+  directionName String @unique @map("direction_name")
+  tests         Test[]
+
+  @@map("test_directions")
+}
+
+model Test {
+  id             Int           @id @default(autoincrement())
+  directionId    Int           @map("direction_id")
+  thresholdValue Int?          @map("threshold_alue")
+  // timeLimit      DateTime?     @map("time_limit") @db.Time()
+  timeLimit      DateTime?     @map("time_limit")
+  attemptLimit   Int?          @map("attempt_limit")
+  title          String?       @map("title")
+  accessTime     DateTime?     @map("access_time")
+  results        Result[]
+  questions      Question[]
+  // contents       TestContent[]
+  testDirection  TestDirection @relation(fields: [directionId], references: [id], onDelete: Cascade)
+
+  @@index([title])
+  @@map("tests")
+}
+
+model Result {
+  id             Int       @id @default(autoincrement())
+  testId         Int       @map("test_id")
+  userId         Int       @map("user_id")
+  scoreId        Int?      @map("score_id")
+  // completionTime DateTime? @map("completion_time") @db.Time()
+  completionTime DateTime? @map("completion_time")
+  isPassed       Boolean   @default(false)
+  interviewDate  DateTime? @map("interview_date")
+  test           Test      @relation(fields: [testId], references: [id])
+  user           User      @relation(fields: [userId], references: [id])
+
+  @@map("results")
+}
+
+model Question {
+  id      Int      @id @default(autoincrement())
+  content String   @map("content")
+  // contents TestContent[]
+  answers Answer[]
+  Test    Test?    @relation(fields: [testId], references: [id])
+  testId  Int?
+
+  @@index([content])
+  @@map("questions")
+}
+
+model Answer {
+  id         Int       @id @default(autoincrement())
+  content    String    @map("content")
+  // contents   TestContent[]
+  isCorrect  Boolean   @map("is_correct")
+  Question   Question? @relation(fields: [questionId], references: [id], onDelete: SetNull)
+  questionId Int?      @map("question_id")
+
+  @@index([content])
+  @@map("answers")
+}
+
+// model TestContent {
+//   id         Int      @id @default(autoincrement())
+//   testId     Int      @map("test_id")
+//   questionId Int      @map("question_id")
+//   answerId   Int?     @map("answer_id")
+//   answer     Answer?  @relation(fields: [answerId], references: [id], onDelete: SetNull)
+//   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+//   test       Test     @relation(fields: [testId], references: [id], onDelete: Cascade)
+
+//   @@map("test_contents")
+// }
+
+enum RoleName {
+  ADMIN
+  MANAGER
+  CHALLENGER
+}
