@@ -17,11 +17,15 @@ export class TestService {
 		})
 	}
 
-	async getAll() {
+	async getAll(name?: string) {
 		return this.prisma.test.findMany({
 			orderBy: { title: 'asc' },
+			where: {
+				testDirection: { directionName: name || undefined }
+			},
 			include: {
 				testDirection: true,
+
 				questions: {
 					include: {
 						answers: true

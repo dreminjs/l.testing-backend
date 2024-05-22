@@ -10,6 +10,7 @@ import { TestDirectionModule } from './test-direction/test-direction.module'
 
 import { TestModule } from './test/test.module'
 import { UserModule } from './user/user.module'
+import { ReportModule } from './report/report.module';
 
 @Module({
 	imports: [
@@ -21,7 +22,8 @@ import { UserModule } from './user/user.module'
 		ResultModule,
 		TestDirectionModule,
 		TestModule,
-		UserModule
+		UserModule,
+		ReportModule
 	],
 	controllers: [],
 	providers: [PrismaService]

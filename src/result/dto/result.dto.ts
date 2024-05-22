@@ -23,4 +23,8 @@ export class ResultDto {
 	@IsNotEmpty()
 	@IsNumber()
 	userId: number
+
+	@IsNotEmpty()
+	@IsNumber()
+	attemptRate: number
 }

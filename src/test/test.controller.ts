@@ -7,6 +7,7 @@ import {
 	Param,
 	Patch,
 	Post,
+	Query,
 	UsePipes,
 	ValidationPipe
 } from '@nestjs/common'
@@ -26,8 +27,8 @@ export class TestController {
 	@Get()
 	@Roles('ADMIN', 'MANAGER', 'CHALLENGER')
 	@UsePipes(new ValidationPipe())
-	async getAll() {
-		return this.testService.getAll()
+	async getAll(@Query('name') name?: string) {
+		return this.testService.getAll(name)
 	}
 
 	@Get(':id')
