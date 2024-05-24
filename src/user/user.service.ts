@@ -24,6 +24,9 @@ export class UserService {
 		return this.prisma.user.findUnique({
 			where: {
 				id: +id
+			},
+			include: {
+				tests: true
 			}
 		})
 	}

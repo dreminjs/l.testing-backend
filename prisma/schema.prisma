@@ -50,14 +50,12 @@ model Test {
   id             Int           @id @default(autoincrement())
   directionId    Int           @map("direction_id")
   thresholdValue Int?          @map("threshold_alue")
-  // timeLimit      DateTime?     @map("time_limit") @db.Time()
   timeLimit      DateTime?     @map("time_limit")
   attemptLimit   Int?          @map("attempt_limit")
   title          String?       @map("title")
   accessTime     DateTime?     @map("access_time")
   results        Result[]
   questions      Question[]
-  // contents       TestContent[]
   testDirection  TestDirection @relation(fields: [directionId], references: [id], onDelete: Cascade)
 
   @@index([title])
@@ -69,7 +67,6 @@ model Result {
   testId         Int       @map("test_id")
   userId         Int       @map("user_id")
   scoreId        Int?      @map("score_id")
-  // completionTime DateTime? @map("completion_time") @db.Time()
   completionTime DateTime? @map("completion_time")
   isPassed       Boolean   @default(false) @map("is_passed")
   attemptRate    Int       @map("attempt_rate")

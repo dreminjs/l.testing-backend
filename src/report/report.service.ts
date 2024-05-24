@@ -5,17 +5,27 @@ import { Injectable } from '@nestjs/common'
 export class ReportService {
 	constructor(private prisma: PrismaService) {}
 
-	async getResults(resultId: number) {
+	async getResults() {
 		return this.prisma.result.findMany({
-			where: { id: +resultId },
 			select: {
 				id: true,
 				completionTime: true,
 				interviewDate: true,
 				isPassed: true,
 				scoreId: true,
+				user: {
+					select: {
+						lastName: true,
+						firstName: true,
+						middleName: true
+					}
+				},
 				test: {
 					select: {
+						thresholdValue: true,
+						accessTime: true,
+						attemptLimit: true,
+						timeLimit: true,
 						title: true,
 						testDirection: {
 							select: {
