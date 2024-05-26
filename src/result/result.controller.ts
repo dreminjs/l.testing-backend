@@ -7,6 +7,7 @@ import {
 	Param,
 	Patch,
 	Post,
+	Query,
 	UsePipes,
 	ValidationPipe
 } from '@nestjs/common'
@@ -26,8 +27,11 @@ export class ResultController {
 	@Get()
 	@Roles('ADMIN', 'MANAGER', 'CHALLENGER')
 	@UsePipes(new ValidationPipe())
-	async getAll() {
-		return this.resultService.getAll()
+	async getAll(
+		@Query('directionName') directionName?: string,
+		@Query('isPassed') isPassed?: string
+	) {
+		return this.resultService.getAll(directionName, isPassed)
 	}
 
 	@Get(':id')

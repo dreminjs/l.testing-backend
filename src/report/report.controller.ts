@@ -1,5 +1,11 @@
 import { Roles } from '@/auth/decorators/admin.decorator'
-import { Controller, Get, UsePipes, ValidationPipe } from '@nestjs/common'
+import {
+	Controller,
+	Get,
+	Query,
+	UsePipes,
+	ValidationPipe
+} from '@nestjs/common'
 import { ReportService } from './report.service'
 
 @Controller('reports')
@@ -9,7 +15,19 @@ export class ReportController {
 	@Get('get-results')
 	@Roles('ADMIN', 'MANAGER')
 	@UsePipes(new ValidationPipe())
-	async getResults() {
-		return this.reportService.getResults()
+	async getResults(
+		@Query('isPassed') isPassed?: string,
+		@Query('directionName') directionName?: string,
+		@Query('maritalStatus') maritalStatus?: string,
+		@Query('children') children?: string,
+		@Query('militaryId') militaryId?: string
+	) {
+		return this.reportService.getResults(
+			isPassed,
+			directionName,
+			maritalStatus,
+			children,
+			militaryId
+		)
 	}
 }

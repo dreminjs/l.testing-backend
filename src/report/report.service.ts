@@ -5,8 +5,28 @@ import { Injectable } from '@nestjs/common'
 export class ReportService {
 	constructor(private prisma: PrismaService) {}
 
-	async getResults() {
+	async getResults(
+		isPassed?: string,
+		directionName?: string,
+		maritalStatus?: string,
+		children?: string,
+		militaryId?: string
+	) {
 		return this.prisma.result.findMany({
+			where: {
+				isPassed: isPassed !== undefined ? isPassed === 'true' : undefined,
+				user: {
+					hasChildren: children !== undefined ? children === 'true' : undefined,
+					isMilitaryId:
+						militaryId !== undefined ? militaryId === 'true' : undefined,
+					maritalStatus: maritalStatus
+				},
+				test: {
+					testDirection: {
+						directionName: directionName
+					}
+				}
+			},
 			select: {
 				id: true,
 				completionTime: true,
@@ -17,7 +37,10 @@ export class ReportService {
 					select: {
 						lastName: true,
 						firstName: true,
-						middleName: true
+						middleName: true,
+						hasChildren: true,
+						isMilitaryId: true,
+						maritalStatus: true
 					}
 				},
 				test: {

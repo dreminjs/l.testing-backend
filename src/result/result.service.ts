@@ -14,8 +14,16 @@ export class ResultService {
 		})
 	}
 
-	async getAll() {
+	async getAll(directionName?: string, isPassed?: string) {
 		return this.prisma.result.findMany({
+			where: {
+				isPassed: isPassed !== undefined ? isPassed === 'true' : undefined,
+				test: {
+					testDirection: {
+						directionName: directionName
+					}
+				}
+			},
 			orderBy: { user: { lastName: 'asc' } },
 			include: {
 				test: { include: { testDirection: true } },

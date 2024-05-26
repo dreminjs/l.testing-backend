@@ -6,6 +6,7 @@ import {
 	Get,
 	Param,
 	Patch,
+	Query,
 	UsePipes,
 	ValidationPipe
 } from '@nestjs/common'
@@ -19,8 +20,12 @@ export class UserController {
 	@Get()
 	@Roles('ADMIN')
 	@UsePipes(new ValidationPipe())
-	async getAll() {
-		return this.userService.getAll()
+	async getAll(
+		@Query('maritalStatus') maritalStatus?: string,
+		@Query('children') children?: string,
+		@Query('militaryId') militaryId?: string
+	) {
+		return this.userService.getAll(maritalStatus, children, militaryId)
 	}
 
 	@Get(':id')
