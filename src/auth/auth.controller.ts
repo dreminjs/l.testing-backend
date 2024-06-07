@@ -14,10 +14,15 @@ import { ChallengerRegisterDto } from './dto/challenger-register.dto'
 import { LoginDto } from './dto/login.dto'
 import { RefreshTokenDto } from './dto/refresh-token.dto'
 import { RegisterDto } from './dto/register.dto'
+import { ResumeService } from '@/resume/resume.service'
 
 @Controller('auth')
 export class AuthController {
-	constructor(private readonly authService: AuthService) {}
+	constructor(
+		private readonly authService: AuthService,
+		private readonly resumeService: ResumeService
+
+	) {}
 
 	@HttpCode(200)
 	@UsePipes(new ValidationPipe())
@@ -30,7 +35,11 @@ export class AuthController {
 	@UsePipes(new ValidationPipe())
 	@Post('challenger-signup')
 	async challengerRegister(@Body() dto: ChallengerRegisterDto) {
-		return this.authService.challengerRegister(dto)
+		const challenger = await this.authService.challengerRegister(dto)
+
+		await this.resumeService.create(challenger.user.id)
+
+		return challenger
 	}
 
 	@HttpCode(200)

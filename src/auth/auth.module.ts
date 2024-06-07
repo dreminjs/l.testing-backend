@@ -6,6 +6,7 @@ import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
 import { getJwtConfig } from './config/jwt.config'
 import { JwtStrategy } from './strategies/jwt.strategy'
+import { ResumeModule } from '@/resume/resume.module'
 
 @Module({
 	controllers: [AuthController],
@@ -16,7 +17,8 @@ import { JwtStrategy } from './strategies/jwt.strategy'
 			imports: [ConfigModule],
 			inject: [ConfigService],
 			useFactory: getJwtConfig
-		})
+		}),
+		ResumeModule
 	]
 })
 export class AuthModule {}

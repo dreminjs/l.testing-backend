@@ -20,14 +20,25 @@ export class ReportController {
 		@Query('directionName') directionName?: string,
 		@Query('maritalStatus') maritalStatus?: string,
 		@Query('children') children?: string,
-		@Query('militaryId') militaryId?: string
+		@Query('militaryId') militaryId?: string,
+		@Query('startDate') startDate?: Date | string,
+		@Query('endDate') endDate?: Date | string
 	) {
 		return this.reportService.getResults(
 			isPassed,
 			directionName,
 			maritalStatus,
 			children,
-			militaryId
+			militaryId,
+			startDate,
+			endDate
 		)
+	}
+
+	@Get('get-results-of-directions')
+	@Roles('ADMIN', 'MANAGER')
+	@UsePipes(new ValidationPipe())
+	async getResultsOfDirections(@Query('direction') direction?: string) {
+		return this.reportService.getResultsOfDirections(direction)
 	}
 }

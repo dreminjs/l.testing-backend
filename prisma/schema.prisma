@@ -32,6 +32,7 @@ model User {
   isMilitaryId  Boolean? @default(false) @map("is_military_id")
   tests         Result[]
   role          Role     @relation(fields: [roleId], references: [id])
+  Resume        Resume?
 
   @@index([login])
   @@index([lastName])
@@ -112,6 +113,19 @@ model Answer {
 
 //   @@map("test_contents")
 // }
+
+model Resume {
+  id            Int      @id @default(autoincrement())
+  photo         String?
+  age           Int
+  about         String
+  desiredSalary Int      @map("desired_salary")
+  experience    String
+  user          User?    @relation(fields: [userId], references: [id])
+  userId        Int      @unique
+  
+  @@map("resumes")
+}
 
 enum RoleName {
   ADMIN

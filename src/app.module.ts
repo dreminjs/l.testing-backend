@@ -7,10 +7,13 @@ import { AnswerModule } from './answer/answer.module'
 import { QuestionModule } from './question/question.module'
 import { ResultModule } from './result/result.module'
 import { TestDirectionModule } from './test-direction/test-direction.module'
-
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { TestModule } from './test/test.module'
 import { UserModule } from './user/user.module'
 import { ReportModule } from './report/report.module';
+import { MailModule } from './mail/mail.module';
+import { ResumeModule } from './resume/resume.module';
+import { join } from 'path'
 
 @Module({
 	imports: [
@@ -23,7 +26,12 @@ import { ReportModule } from './report/report.module';
 		TestDirectionModule,
 		TestModule,
 		UserModule,
-		ReportModule
+		ReportModule,
+		MailModule,
+		ResumeModule,
+		ServeStaticModule.forRoot({
+			rootPath: "./uploads",
+		  }),
 	],
 	controllers: [],
 	providers: [PrismaService]
