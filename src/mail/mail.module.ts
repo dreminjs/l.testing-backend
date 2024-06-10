@@ -4,9 +4,10 @@ import { MailService } from './mail.service';
 import { UserModule } from '@/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { ResultModule } from '@/result/result.module';
 
 @Module({
-  imports:[UserModule,MailerModule.forRootAsync({
+  imports:[UserModule,ResultModule,MailerModule.forRootAsync({
     imports: [ConfigModule],
     inject: [ConfigService],
     useFactory: async (configService: ConfigService) => ({

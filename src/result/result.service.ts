@@ -1,6 +1,6 @@
 import { PrismaService } from '@/prisma/prisma.service'
 import { Injectable } from '@nestjs/common'
-import { ResultDto } from './dto/result.dto'
+import { IResultDto, ResultDto, UpdateResultDto } from './dto/result.dto'
 
 @Injectable()
 export class ResultService {
@@ -44,7 +44,7 @@ export class ResultService {
 		})
 	}
 
-	async update(id: number, dto: ResultDto) {
+	async update(id: number, dto: UpdateResultDto) {
 		await this.getById(id)
 		return this.prisma.result.update({
 			where: {
@@ -54,7 +54,7 @@ export class ResultService {
 				...dto
 			}
 		})
-	}
+	};
 
 	async delete(id: number) {
 		await this.getById(id)

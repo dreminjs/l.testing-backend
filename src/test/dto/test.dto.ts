@@ -10,8 +10,8 @@ export class TestDto {
 	accessTime: Date
 
 	@IsNotEmpty()
-	@IsString()
-	timeLimit: Date
+	@IsNumber()
+	timeLimit: number
 
 	@IsNotEmpty()
 	@IsNumber()
@@ -24,4 +24,10 @@ export class TestDto {
 	@IsNotEmpty()
 	@IsNumber()
 	directionId: number
+
+}
+
+
+export class UpdateTestDto extends TestDto {
+	photo:string
 }

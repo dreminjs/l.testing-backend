@@ -8,9 +8,6 @@ export class ResultDto {
 	@IsNotEmpty()
 	@IsString()
 	completionTime: Date
-	@IsNotEmpty()
-	@IsString()
-	interviewDate: Date
 
 	@IsNotEmpty()
 	@IsBoolean()
@@ -28,3 +25,15 @@ export class ResultDto {
 	@IsNumber()
 	attemptRate: number
 }
+
+export interface IResultDto {
+	scoreId: number
+	completionTime: Date
+	isPassed: boolean
+	testId: number
+	userId: number
+	attemptRate: number
+	interviewDate:Date 
+}
+
+export interface UpdateResultDto extends Partial<IResultDto>{}

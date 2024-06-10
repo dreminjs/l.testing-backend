@@ -1,27 +1,41 @@
 import { PrismaService } from '@/prisma/prisma.service'
-import { Injectable } from '@nestjs/common'
-import { TestDto } from './dto/test.dto'
+import { Injectable, Logger } from '@nestjs/common'
+import { TestDto, UpdateTestDto } from './dto/test.dto'
 
 @Injectable()
 export class TestService {
 	constructor(private prisma: PrismaService) {}
 
-	async create(dto: TestDto) {
+	private logger = new Logger(TestService.name)
+
+	async create(dto: TestDto, filename: string) {
 		return this.prisma.test.create({
 			data: {
-				...dto,
-
-				accessTime: new Date(dto.accessTime).toISOString(),
-				timeLimit: new Date(dto.timeLimit).toISOString()
+				attemptLimit: +dto.attemptLimit,
+				thresholdValue: +dto.thresholdValue,
+				directionId: +dto.directionId,
+				timeLimit: +dto.timeLimit,
+				title: dto.title,
+				photo: filename,
+				accessTime: new Date(dto.accessTime).toISOString()
 			}
 		})
 	}
 
-	async getAll(name?: string) {
+	async getAll(id: number, name?: string,isAdmin?:boolean) {
 		return this.prisma.test.findMany({
 			orderBy: { title: 'asc' },
 			where: {
-				testDirection: { directionName: name || undefined }
+				testDirection: { directionName: name || undefined },
+				...(!isAdmin && {
+					questions: {
+						some: {
+							answers: {
+								some: {}
+							}
+						}
+					}
+				})
 			},
 			include: {
 				testDirection: true,
@@ -31,7 +45,11 @@ export class TestService {
 						answers: true
 					}
 				},
-				results: true
+				results: {
+					where: {
+						userId: id
+					}
+				}
 			}
 		})
 	}
@@ -53,19 +71,20 @@ export class TestService {
 		})
 	}
 
-	async update(id: number, dto: TestDto) {
+	async update(id: number, dto: UpdateTestDto) {
 		await this.getById(id)
 		return this.prisma.test.update({
 			where: {
 				id: +id
 			},
 			data: {
-				directionId: dto.directionId,
-				thresholdValue: dto.thresholdValue,
-				attemptLimit: dto.attemptLimit,
+				directionId: +dto.directionId,
+				thresholdValue: +dto.thresholdValue,
+				attemptLimit: +dto.attemptLimit,
 				title: dto.title,
 				accessTime: new Date(dto.accessTime).toISOString(),
-				timeLimit: new Date(dto.timeLimit).toISOString()
+				timeLimit: +dto.timeLimit,
+				photo: dto.photo
 			}
 		})
 	}

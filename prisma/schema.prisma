@@ -47,17 +47,18 @@ model TestDirection {
   @@map("test_directions")
 }
 
-model Test {
-  id             Int           @id @default(autoincrement())
-  directionId    Int           @map("direction_id")
-  thresholdValue Int?          @map("threshold_alue")
-  timeLimit      DateTime?     @map("time_limit")
-  attemptLimit   Int?          @map("attempt_limit")
-  title          String?       @map("title")
-  accessTime     DateTime?     @map("access_time")
-  results        Result[]
-  questions      Question[]
-  testDirection  TestDirection @relation(fields: [directionId], references: [id], onDelete: Cascade)
+model Test {      
+  id                  Int              @id @default(autoincrement())
+  directionId         Int              @map("direction_id")
+  thresholdValue      Int?             @map("threshold_alue")
+  timeLimit           Int              @map("time_limit")
+  attemptLimit        Int?             @map("attempt_limit")
+  title               String?          @map("title")
+  accessTime          DateTime?        @map("access_time")
+  photo               String           @map("photo")
+  results             Result[]
+  questions           Question[]
+  testDirection       TestDirection    @relation(fields: [directionId], references: [id], onDelete: Cascade)
 
   @@index([title])
   @@map("tests")
@@ -71,7 +72,7 @@ model Result {
   completionTime DateTime? @map("completion_time")
   isPassed       Boolean   @default(false) @map("is_passed")
   attemptRate    Int       @map("attempt_rate")
-  interviewDate  DateTime? @map("interview_date")
+  interviewDate  DateTime? @map("interview_date") 
   test           Test      @relation(fields: [testId], references: [id])
   user           User      @relation(fields: [userId], references: [id])
 

@@ -4,6 +4,7 @@ import {
 	Controller,
 	Delete,
 	Get,
+	Logger,
 	Param,
 	Patch,
 	Post,
@@ -17,10 +18,16 @@ import { ResultService } from './result.service'
 @Controller('results')
 export class ResultController {
 	constructor(private readonly resultService: ResultService) {}
+	
+	private logger = new Logger(ResultController.name)
+	
 	@Post()
 	@Roles('ADMIN', 'MANAGER', 'CHALLENGER')
 	@UsePipes(new ValidationPipe())
 	async create(@Body() dto: ResultDto) {
+
+		this.logger.log(dto)
+
 		return this.resultService.create(dto)
 	}
 
@@ -31,7 +38,7 @@ export class ResultController {
 		@Query('directionName') directionName?: string,
 		@Query('isPassed') isPassed?: string
 	) {
-		return this.resultService.getAll(directionName, isPassed)
+		return this.resultService.getAll(directionName, isPassed);
 	}
 
 	@Get(':id')
