@@ -21,7 +21,6 @@ model User {
   roleId        Int      @map("role_id")
   login         String?  @unique @map("login")
   password      String?  @map("password")
-  resume        String?  @map("resume")
   lastName      String?  @map("last_name")
   firstName     String?  @map("first_name")
   middleName    String?  @map("middle_name")
@@ -32,7 +31,7 @@ model User {
   isMilitaryId  Boolean? @default(false) @map("is_military_id")
   tests         Result[]
   role          Role     @relation(fields: [roleId], references: [id])
-  Resume        Resume?
+  resume        Resume?
 
   @@index([login])
   @@index([lastName])

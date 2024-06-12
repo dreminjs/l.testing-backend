@@ -44,7 +44,7 @@ export class ChallengerRegisterDto {
 
 	@IsString()
 	@IsOptional()
-	resume: string
+	resumeId: string
 
 	@IsNumber()
 	@IsOptional()

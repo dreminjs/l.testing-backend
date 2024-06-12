@@ -36,7 +36,8 @@ export class UserService {
 			},
 			include: {
 				tests: true,
-				role: true
+				role: true,
+				resume:true
 			}
 		})
 	}

@@ -17,7 +17,7 @@ export class UserDto {
 
 	@IsOptional()
 	@IsString()
-	resume?: string
+	resumeId?: string
 
 	@IsOptional()
 	@IsEmail()
