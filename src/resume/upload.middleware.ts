@@ -4,6 +4,7 @@ import {
   MulterModuleOptions,
 } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -13,7 +14,7 @@ export class UploadMiddleware implements MulterOptionsFactory {
   createMulterOptions(): MulterModuleOptions {
     return {
       storage: diskStorage({
-        destination: './uploads',
+        destination: path.join(__dirname,"uploads"),
         filename: (req: any, file, cb) => {
           const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
           const extension = file.originalname.split('.').pop();
