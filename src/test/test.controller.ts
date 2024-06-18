@@ -55,6 +55,7 @@ export class TestController {
 	@Roles('ADMIN', 'MANAGER')
 	@UseInterceptors(FileInterceptor('photo'))
 	async update(@Param('id') id: number, @Body() dto: TestDto,@Req() req) {
+		this.logger.log(req.filename)
 		await this.testService.getById(id)
 		return this.testService.update(id, {...dto,photo:req.filename})
 	}
