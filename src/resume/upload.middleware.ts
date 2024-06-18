@@ -1,3 +1,4 @@
+import { AwsService } from '@/aws/aws.service';
 import { Injectable, Logger } from '@nestjs/common';
 import {
   MulterOptionsFactory,
@@ -5,22 +6,32 @@ import {
 } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import * as path from 'path';
+import { join } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UploadMiddleware implements MulterOptionsFactory {
   private logger = new Logger(UploadMiddleware.name);
 
+  // constructor(private readonly awsService:AwsService){}
+
+
+
   createMulterOptions(): MulterModuleOptions {
     return {
       storage: diskStorage({
-        destination: path.join(__dirname,"uploads"),
+        destination:join(process.cwd(), 'uploads'),
         filename: (req: any, file, cb) => {
           const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
           const extension = file.originalname.split('.').pop();
           const filename = `${uuidv4()}-${uniqueSuffix}.${extension}`;
           if (file) {
             req.filename = filename;
+          
+            console.log(process.cwd())
+
+            console.log(file)
+            // this.awsService.uploadFile(file.buffer,filename);
           }
           cb(null, filename);
         },
