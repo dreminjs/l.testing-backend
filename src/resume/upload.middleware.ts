@@ -14,7 +14,7 @@ export class UploadMiddleware implements MulterOptionsFactory {
   createMulterOptions(): MulterModuleOptions {
     return {
       storage: diskStorage({
-        destination:path.join(__dirname,'..',"..","..","uploads"),
+        destination:path.join(__dirname,'..',"..","uploads"),
         filename: (req: any, file, cb) => {
           const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
           
