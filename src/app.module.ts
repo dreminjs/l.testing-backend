@@ -13,12 +13,11 @@ import { UserModule } from './user/user.module'
 import { ReportModule } from './report/report.module';
 import { MailModule } from './mail/mail.module';
 import { ResumeModule } from './resume/resume.module';
-import path, { join, resolve } from 'path'
-import { AwsModule } from './aws/aws.module';
+import * as path from 'path'
 
 @Module({
 	imports: [
-		ConfigModule.forRoot({isGlobal:true}),
+		ConfigModule.forRoot(),
 		AuthModule,
 		AnswerModule,
 		AnswerModule,
@@ -30,10 +29,9 @@ import { AwsModule } from './aws/aws.module';
 		ReportModule,
 		MailModule,
 		ResumeModule,
-		// ServeStaticModule.forRoot({
-		// 	rootPath: join(__dirname,'..','uploads'),
-		//   }),
-		AwsModule,
+		ServeStaticModule.forRoot({
+			rootPath:path.join(process.cwd(),"uploads"),
+		  }),
 	],
 	controllers: [],
 	providers: [PrismaService]

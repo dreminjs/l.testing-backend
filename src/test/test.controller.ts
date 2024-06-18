@@ -1,5 +1,4 @@
 import { Roles } from '@/auth/decorators/admin.decorator'
-import { v4 as uuidv4 } from 'uuid';
 import {
 	Body,
 	Controller,
@@ -11,7 +10,6 @@ import {
 	Post,
 	Query,
 	Req,
-	UploadedFile,
 	UseInterceptors,
 	UsePipes,
 	ValidationPipe
@@ -20,11 +18,10 @@ import { TestDto } from './dto/test.dto'
 import { TestService } from './test.service'
 import { CurrentUser } from '@/user/currentUser.decorator'
 import { FileInterceptor } from '@nestjs/platform-express'
-import { AwsService } from '@/aws/aws.service'
 
 @Controller('tests')
 export class TestController {
-	constructor(private readonly testService: TestService,private readonly awsService:AwsService) {}
+	constructor(private readonly testService: TestService) {}
 
 	private logger = new Logger(TestController.name)
 	
@@ -53,26 +50,13 @@ export class TestController {
 	async getById(@Param('id') id: number) {
 		return this.testService.getById(id)
 	}
-	
+
 	@Patch(':id')
 	@Roles('ADMIN', 'MANAGER')
 	@UseInterceptors(FileInterceptor('photo'))
-	async update(@Param('id') id: number, @Body() dto: TestDto,@Req() req: any,@UploadedFile() photo: Express.Multer.File) {
-
-		// const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-		
-		// this.logger.log(photo.buffer)
-
-		// const extension = photo.originalname.split('.').pop();
-
-		// const filename = `${uuidv4()}-${uniqueSuffix}.${extension}`;
-
-
-		// const res = await this.awsService.uploadFile(photo.buffer,filename)
-
+	async update(@Param('id') id: number, @Body() dto: TestDto,@Req() req) {
 		await this.testService.getById(id)
-
-		return this.testService.update(id, {...dto,photo:req.filename});
+		return this.testService.update(id, {...dto,photo:req.filename})
 	}
 
 	@Delete(':id')
