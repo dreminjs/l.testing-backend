@@ -22,7 +22,7 @@ export class UploadMiddleware implements MulterOptionsFactory {
           const filename = `${uuidv4()}-${uniqueSuffix}.${extension}`;
           if (file) {
             req.filename = filename;
-             console.log(path.join(__dirname,"/uploads"))
+             console.log(path.join(__dirname,'..',"/uploads"))
           }
           cb(null, filename);
         },
