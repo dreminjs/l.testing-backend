@@ -30,7 +30,7 @@ import * as path from 'path'
 		MailModule,
 		ResumeModule,
 		ServeStaticModule.forRoot({
-			rootPath:path.join(process.cwd(),"uploads"),
+			rootPath:path.join(__dirname,"../uploads"),
 		  }),
 	],
 	controllers: [],
