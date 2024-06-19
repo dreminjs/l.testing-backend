@@ -22,7 +22,7 @@ export class UploadMiddleware implements MulterOptionsFactory {
           this.logger.log(file)
           if (file) {
               req.filename = filename;
-             console.log(path.join(__dirname,'..',"..","..","..","..","uploads"))
+           
           }
           cb(null, filename);
         },
