@@ -36,4 +36,4 @@ import * as path from 'path'
 	controllers: [],
 	providers: [PrismaService]
 })
-export class AppModule {}
+export class AppModule {};
